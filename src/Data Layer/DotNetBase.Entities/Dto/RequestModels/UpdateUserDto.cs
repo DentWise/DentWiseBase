@@ -6,5 +6,6 @@
         public string? Password { get; set; } // Optional, null ise değiştirilmez. Yeni şifre.
         public bool? IsMailConfirmed { get; set; } // Optional
         public int? RoleId { get; set; }  // Optional
+        public string? PhoneNumber { get; set; }
     }
 }

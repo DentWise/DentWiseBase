@@ -1,8 +1,8 @@
-﻿using DotNetBase.EFCore.UnitOfWork;
-using DotNetBase.Entities.Identity;
+﻿using DotNetBase.Business.Identity.Interfaces;
+using DotNetBase.EFCore.UnitOfWork;
 using DotNetBase.Entities.Dto.RequestModels;
+using DotNetBase.Entities.Identity;
 using DotNetBase.Infrastructure.Common.Helpers;
-using DotNetBase.Business.Identity.Interfaces;
 
 namespace DotNetBase.Business.Identity.Services
 {
@@ -42,7 +42,8 @@ namespace DotNetBase.Business.Identity.Services
                 EMail = createUserDto.EMail,
                 HashedPassword = hashedPassword,
                 RoleId = createUserDto.RoleId,
-                IsMailConfirmed = false, // Yeni kullanıcı, e-posta onayı bekliyor.
+                PhoneNumber = createUserDto.PhoneNumber,
+                CompanyId = createUserDto.CompanyId,
                 IsDeleted = false, //Yeni kullanıcı soft delete false
                 CreatedAt = DateTime.UtcNow,
             };
@@ -55,8 +56,8 @@ namespace DotNetBase.Business.Identity.Services
             {
                 Id = newUser.Id,
                 EMail = newUser.EMail,
-                IsMailConfirmed = newUser.IsMailConfirmed,
                 RoleId = newUser.RoleId,
+                PhoneNumber = newUser.PhoneNumber,
                 RoleName = newUser.Role?.Name,  // Role null olabilir.
                 CreatedAt = newUser.CreatedAt,
                 UpdatedAt = newUser.UpdatedAt
@@ -75,6 +76,15 @@ namespace DotNetBase.Business.Identity.Services
             user.DeletedAt = DateTime.UtcNow;
             //_unitOfWork.Users.Remove(user);  // *Fiziksel* silme.  YAPMAYIN!
             _unitOfWork.UserRepository.Update(user); // Soft delete için Update kullanıyoruz.
+
+            //var dentist = await _unitOfWork.DentistRepository.FindOneAsync(x => x.UserId == id);
+            //if (dentist != null)
+            //{
+            //    dentist.IsDeleted = true;
+            //    dentist.DeletedAt = DateTime.UtcNow;
+            //    _unitOfWork.DentistRepository.Update(dentist);
+            //}
+
             await _unitOfWork.CompleteAsync();
         }
 
@@ -86,8 +96,8 @@ namespace DotNetBase.Business.Identity.Services
             {
                 Id = user.Id,
                 EMail = user.EMail,
-                IsMailConfirmed = user.IsMailConfirmed,
                 RoleId = user.RoleId,
+                PhoneNumber = user.PhoneNumber,
                 RoleName = user.Role?.Name, // ?.  Role'ün null olup olmadığını kontrol eder.
                 CreatedAt = user.CreatedAt,
                 UpdatedAt = user.UpdatedAt
@@ -106,8 +116,8 @@ namespace DotNetBase.Business.Identity.Services
             {
                 Id = user.Id,
                 EMail = user.EMail,
-                IsMailConfirmed = user.IsMailConfirmed,
                 RoleId = user.RoleId,
+                PhoneNumber = user.PhoneNumber,
                 RoleName = user.Role?.Name,
                 CreatedAt = user.CreatedAt,
                 UpdatedAt = user.UpdatedAt
@@ -140,13 +150,13 @@ namespace DotNetBase.Business.Identity.Services
             {
                 user.HashedPassword = HashHelper.HashPassword(updateUserDto.Password); // Yeni şifreyi hash'le
             }
-            if (updateUserDto.IsMailConfirmed != null)
-            {
-                user.IsMailConfirmed = updateUserDto.IsMailConfirmed.Value;
-            }
             if (updateUserDto.RoleId != null)
             {
                 user.RoleId = updateUserDto.RoleId.Value;
+            }
+            if (updateUserDto.PhoneNumber != null)
+            {
+                user.PhoneNumber = updateUserDto.PhoneNumber;
             }
 
             user.UpdatedAt = DateTime.UtcNow;
@@ -167,8 +177,8 @@ namespace DotNetBase.Business.Identity.Services
             {
                 Id = user.Id,
                 EMail = user.EMail,
-                IsMailConfirmed = user.IsMailConfirmed,
                 RoleId = user.RoleId,
+                PhoneNumber = user.PhoneNumber,
                 RoleName = user.Role?.Name,
                 CreatedAt = user.CreatedAt,
                 UpdatedAt = user.UpdatedAt
@@ -184,6 +194,57 @@ namespace DotNetBase.Business.Identity.Services
             }
             //Bcrypt Kullanımı
             return HashHelper.VerifyPassword(password, user.HashedPassword);
+        }
+
+        public async Task SendVerificationCodeEmailAsync(string email)
+        {
+            var code = GenerateVerificationCode();
+            var expirationDate = DateTime.UtcNow.AddMinutes(15);
+
+            var user = await _unitOfWork.UserRepository.FindOneAsync(x => x.EMail == email);
+            if (user == null)
+            {
+                throw new Exception("User not found!");
+            }
+
+            var verificationCode = new VerificationCode
+            {
+                UserId = user.Id,
+                Code = code,
+                CodeType = Entities.Enum.VerificationCodeTypeEnum.Email,
+                ExpirationDate = expirationDate,
+                CreatedAt = DateTime.UtcNow,
+                isUsed = false
+            };
+            await _unitOfWork.VerificationCodeRepository.AddAsync(verificationCode);
+            await _unitOfWork.CompleteAsync();
+
+            //TODO: email servis.
+        }
+
+        public async Task<bool> VerifyCodeAsync(int userId, string code)
+        {
+            var verificationCode = await _unitOfWork.VerificationCodeRepository
+                    .FindOneAsync(x => x.UserId == userId && x.Code == code && x.ExpirationDate > DateTime.UtcNow && !x.isUsed);
+            var user = await _unitOfWork.UserRepository.GetByIdAsync(userId);
+
+            if (verificationCode == null)
+                throw new Exception("Invalid or expired verification code.");
+
+            verificationCode.isUsed = true;
+            _unitOfWork.VerificationCodeRepository.Update(verificationCode);
+
+            _unitOfWork.UserRepository.Update(user);
+
+            await _unitOfWork.CompleteAsync();
+
+            return true;
+        }
+
+        private string GenerateVerificationCode()
+        {
+            var random = new Random();
+            return random.Next(100000, 999999).ToString();
         }
     }
 }

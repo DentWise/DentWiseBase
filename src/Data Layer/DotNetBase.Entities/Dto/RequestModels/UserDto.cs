@@ -11,6 +11,7 @@ namespace DotNetBase.Entities.Dto.RequestModels
         public int Id { get; set; }
         public string EMail { get; set; }
         public bool IsMailConfirmed { get; set; }
+        public string PhoneNumber { get; set; }
         public int RoleId { get; set; }
         public string RoleName { get; set; } // Role adını da DTO'ya ekliyoruz.
         public DateTime CreatedAt { get; set; }
