@@ -1,8 +1,11 @@
 ﻿// Infrastructure/UnitOfWork.cs
 using DotNetBase.EFCore.DBContext;
-using DotNetBase.EFCore.Entities;
 using DotNetBase.EFCore.Repositories;
 using DotNetBase.EFCore.UnitOfWork;
+using DotNetBase.Entities.Entities.Crm;
+using DotNetBase.Entities.Entities.Financial;
+using DotNetBase.Entities.Entities.Identity;
+using DotNetBase.Entities.Entities.Procurement;
 
 public class UnitOfWork : IUnitOfWork
 {
@@ -50,11 +53,11 @@ public class UnitOfWork : IUnitOfWork
     private IRepository<ClinicPayment> _clinicPaymentRepository;
     private IRepository<PaymentStatus> _paymentStatusRepository;
     private IRepository<Permission> _permissionRepository;
-
     public UnitOfWork(BaseDbContext context)
     {
         _context = context;
     }
+
 
     // Lazy loading ile repository'leri oluşturuyoruz.
     public IRepository<User> UserRepository => _userRepository ??= new Repository<User>(_context);

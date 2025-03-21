@@ -1,5 +1,8 @@
-﻿using DotNetBase.EFCore.Entities;
-using DotNetBase.EFCore.Repositories;
+﻿using DotNetBase.EFCore.Repositories;
+using DotNetBase.Entities.Entities.Crm;
+using DotNetBase.Entities.Entities.Financial;
+using DotNetBase.Entities.Entities.Identity;
+using DotNetBase.Entities.Entities.Procurement;
 
 namespace DotNetBase.EFCore.UnitOfWork
 {

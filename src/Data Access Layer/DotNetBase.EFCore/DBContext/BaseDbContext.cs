@@ -1,8 +1,11 @@
-﻿using DotNetBase.EFCore.Entities;
-using DotNetBase.Entities.Abstract;
+﻿using DotNetBase.Entities.Abstract;
+using DotNetBase.Entities.Entities.Crm;
+using DotNetBase.Entities.Entities.Financial;
+using DotNetBase.Entities.Entities.Identity;
+using DotNetBase.Entities.Entities.Procurement;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using Task = DotNetBase.EFCore.Entities.Task;
+using Task = DotNetBase.Entities.Entities.Crm.Task;
 
 namespace DotNetBase.EFCore.DBContext
 {
