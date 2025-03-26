@@ -1,25 +1,17 @@
-﻿using System;
+﻿using DotNetBase.Entities.Abstract;
+using System;
 using System.Collections.Generic;
 
 namespace DotNetBase.EFCore.Entities;
 
-public partial class ProductCommission
+public partial class ProductCommission : BaseEntity
 {
-    public int Id { get; set; }
-
     public int? ProductId { get; set; }
-
     public decimal Rate { get; set; }
-
     public DateTime StartDate { get; set; }
-
     public DateTime? EndDate { get; set; }
+    public bool? IsActive { get; set; } = true;
 
-    public bool? IsActive { get; set; }
-
-    public DateTime? CreatedAt { get; set; }
-
-    public DateTime? UpdatedAt { get; set; }
 
     public virtual Product? Product { get; set; }
 }

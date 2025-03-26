@@ -26,7 +26,9 @@ namespace DotNetBase.EFCore.UnitOfWork
         IRepository<PurchaseRequisition> PurchaseRequisitionRepository { get; }
         IRepository<RequisitionItem> RequisitionItemRepository { get; }
         IRepository<ProductCategory> ProductCategoryRepository { get; }
+        IRepository<ProductCommission> ProductCommissionRepository { get; }
         IRepository<Product> ProductRepository { get; }
+        IRepository<ProductImage> ProductImageRepository { get; }
         IRepository<ProductUnit> ProductUnitRepository { get; }
         IRepository<SupplierProduct> SupplierProductRepository { get; }
         IRepository<Currency> CurrencyRepository { get; }
@@ -48,6 +50,7 @@ namespace DotNetBase.EFCore.UnitOfWork
         IRepository<ClinicPayment> ClinicPaymentRepository { get; }
         IRepository<PaymentStatus> PaymentStatusRepository { get; }
         IRepository<Permission> PermissionRepository { get; }
+        IRepository<Entities.Task> TaskRepository { get; }
         Task<int> CompleteAsync();
     }
 }

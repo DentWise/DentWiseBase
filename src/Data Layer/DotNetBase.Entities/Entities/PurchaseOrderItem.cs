@@ -2,22 +2,17 @@
 
 namespace DotNetBase.EFCore.Entities;
 
-public partial class PurchaseOrderItem : BaseEntity
+public partial class PurchaseOrderItem : BaseEntity, ISoftDeletable
 {
-
     public int? PurchaseOrderId { get; set; }
-
     public int? SupplierQuotationItemId { get; set; }
-
     public int? ProductId { get; set; }
-
     public int OrderedQuantity { get; set; }
-
     public decimal UnitPrice { get; set; }
-
     public decimal? LineAmount { get; set; }
-
     public string? Description { get; set; }
+    public bool IsDeleted { get; set; } = false;
+    public DateTime? DeletedAt { get; set; }
 
     public virtual Product? Product { get; set; }
 

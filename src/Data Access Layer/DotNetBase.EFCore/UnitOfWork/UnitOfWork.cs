@@ -28,7 +28,9 @@ public class UnitOfWork : IUnitOfWork
     private IRepository<PurchaseRequisition> _purchaseRequisitionRepository;
     private IRepository<RequisitionItem> _requisitionItemRepository;
     private IRepository<ProductCategory> _productCategoryRepository;
+    private IRepository<ProductCommission> _productCommissionRepository;
     private IRepository<Product> _productRepository;
+    private IRepository<ProductImage> _productImageRepository;
     private IRepository<ProductUnit> _productUnitRepository;
     private IRepository<SupplierProduct> _supplierProductRepository;
     private IRepository<Currency> _currencyRepository;
@@ -50,6 +52,7 @@ public class UnitOfWork : IUnitOfWork
     private IRepository<ClinicPayment> _clinicPaymentRepository;
     private IRepository<PaymentStatus> _paymentStatusRepository;
     private IRepository<Permission> _permissionRepository;
+    private IRepository<DotNetBase.EFCore.Entities.Task> _taskRepository;
 
     public UnitOfWork(BaseDbContext context)
     {
@@ -78,7 +81,9 @@ public class UnitOfWork : IUnitOfWork
     public IRepository<PurchaseRequisition> PurchaseRequisitionRepository => _purchaseRequisitionRepository ??= new Repository<PurchaseRequisition>(_context);
     public IRepository<RequisitionItem> RequisitionItemRepository => _requisitionItemRepository ??= new Repository<RequisitionItem>(_context);
     public IRepository<ProductCategory> ProductCategoryRepository => _productCategoryRepository ??= new Repository<ProductCategory>(_context);
+    public IRepository<ProductCommission> ProductCommissionRepository => _productCommissionRepository ??= new Repository<ProductCommission>(_context);
     public IRepository<Product> ProductRepository => _productRepository ??= new Repository<Product>(_context);
+    public IRepository<ProductImage> ProductImageRepository => _productImageRepository ??= new Repository<ProductImage>(_context);
     public IRepository<ProductUnit> ProductUnitRepository => _productUnitRepository ??= new Repository<ProductUnit>(_context);
     public IRepository<SupplierProduct> SupplierProductRepository => _supplierProductRepository ??= new Repository<SupplierProduct>(_context);
     public IRepository<Currency> CurrencyRepository => _currencyRepository ??= new Repository<Currency>(_context);
@@ -100,6 +105,7 @@ public class UnitOfWork : IUnitOfWork
     public IRepository<ClinicPayment> ClinicPaymentRepository => _clinicPaymentRepository ??= new Repository<ClinicPayment>(_context);
     public IRepository<PaymentStatus> PaymentStatusRepository => _paymentStatusRepository ??= new Repository<PaymentStatus>(_context);
     public IRepository<Permission> PermissionRepository => _permissionRepository ??= new Repository<Permission>(_context);
+    public IRepository<DotNetBase.EFCore.Entities.Task> TaskRepository => _taskRepository ??= new Repository<DotNetBase.EFCore.Entities.Task>(_context);
 
     public async Task<int> CompleteAsync()
     {

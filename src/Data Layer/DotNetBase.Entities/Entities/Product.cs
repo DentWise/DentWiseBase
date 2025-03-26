@@ -2,26 +2,20 @@
 
 namespace DotNetBase.EFCore.Entities;
 
-public partial class Product : BaseEntity
+public partial class Product : BaseEntity, ISoftDeletable
 {
 
     public string ProductName { get; set; } = null!;
-
     public string? ProductDescription { get; set; }
-
     public string? ProductCode { get; set; }
-
     public int? ProductCategoryId { get; set; }
-
     public int? ProductUnitId { get; set; }
-
     public int? ProductBrandId { get; set; }
-
     public decimal? PurchasePrice { get; set; }
-
     public decimal? SalePrice { get; set; }
-
     public bool? IsActive { get; set; }
+    public bool IsDeleted { get; set; } = false;
+    public DateTime? DeletedAt { get; set; }
 
     public virtual ICollection<ConsolidatedRequisitionItem> ConsolidatedRequisitionItems { get; set; } = new List<ConsolidatedRequisitionItem>();
 

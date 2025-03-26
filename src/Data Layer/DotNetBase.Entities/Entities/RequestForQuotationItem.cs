@@ -2,16 +2,15 @@
 
 namespace DotNetBase.EFCore.Entities;
 
-public partial class RequestForQuotationItem : BaseEntity
+public partial class RequestForQuotationItem : BaseEntity, ISoftDeletable
 {
 
     public int? RequestForQuotationId { get; set; }
-
     public int? ConsolidatedRequisitionItemId { get; set; }
-
     public int Quantity { get; set; }
-
     public string? Description { get; set; }
+    public DateTime? DeletedAt { get; set; }
+    public bool IsDeleted { get; set; } = false;
 
     public virtual ConsolidatedRequisitionItem? ConsolidatedRequisitionItem { get; set; }
 

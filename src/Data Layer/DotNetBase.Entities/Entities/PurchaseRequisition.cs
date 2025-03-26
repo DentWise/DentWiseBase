@@ -4,24 +4,18 @@ using System.Collections.Generic;
 
 namespace DotNetBase.EFCore.Entities;
 
-public partial class PurchaseRequisition : BaseEntity
+public partial class PurchaseRequisition : BaseEntity, ISoftDeletable
 {
-
     public string RequisitionNumber { get; set; } = null!;
-
     public DateTime RequisitionDate { get; set; }
-
     public int? RequesterUserId { get; set; }
-
     public int? RequesterCompanyId { get; set; }
-
     public int? RequisitionStatusId { get; set; }
-
     public int? DeliveryCompanyAddressId { get; set; }
-
     public string? Description { get; set; }
-
     public string? ApprovalNotes { get; set; }
+    public DateTime? DeletedAt { get; set; }
+    public bool IsDeleted { get; set; } = false;
 
     public virtual CompanyAddress? DeliveryCompanyAddress { get; set; }
 

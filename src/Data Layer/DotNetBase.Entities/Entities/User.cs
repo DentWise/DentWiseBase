@@ -4,35 +4,23 @@ using System.Collections.Generic;
 
 namespace DotNetBase.EFCore.Entities;
 
-public partial class User : BaseEntity
+public partial class User : BaseEntity, ISoftDeletable
 {
     public string Username { get; set; } = null!;
-
     public string PasswordHash { get; set; } = null!;
-
     public string? Email { get; set; }
-
     public DateTime? EmailVerifiedAt { get; set; }
-
     public bool? IsEmailVerified { get; set; }
-
     public string? PhoneNumber { get; set; }
-
     public DateTime? PhoneVerifiedAt { get; set; }
-
     public bool? IsPhoneVerified { get; set; }
-
-    public bool IsActive { get; set; }
-
     public bool TwoFactorEnabled { get; set; }
-
     public string? TwoFactorSecret { get; set; }
-
     public int? RoleId { get; set; }
-
     public int? CompanyId { get; set; }
-
     public int? ContactId { get; set; }
+    public bool IsDeleted { get; set; } = false;
+    public DateTime? DeletedAt { get; set; }
 
     public virtual Company? Company { get; set; }
 

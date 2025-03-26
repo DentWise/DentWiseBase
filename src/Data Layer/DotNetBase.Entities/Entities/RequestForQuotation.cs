@@ -2,24 +2,19 @@
 
 namespace DotNetBase.EFCore.Entities;
 
-public partial class RequestForQuotation : BaseEntity
+public partial class RequestForQuotation : BaseEntity, ISoftDeletable
 {
 
     public string Rfqnumber { get; set; } = null!;
-
     public DateTime Rfqdate { get; set; }
-
     public int? PurchaseRequestConsolidationId { get; set; }
-
     public int? SupplierCompanyId { get; set; }
-
     public int? RfqstatusId { get; set; }
-
     public string? Description { get; set; }
-
     public DateTime? SentDate { get; set; }
-
     public DateTime? ResponseDueDate { get; set; }
+    public DateTime? DeletedAt { get; set; }
+    public bool IsDeleted { get; set; } = false;
 
     public virtual ICollection<PurchaseOrder> PurchaseOrders { get; set; } = new List<PurchaseOrder>();
 

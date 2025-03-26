@@ -1,17 +1,16 @@
-﻿//using DotNetBase.Entities.Dto.RequestModels;
+﻿using DotNetBase.EFCore.Entities;
+using DotNetBase.Entities.Dto.RequestModel;
+using Task = System.Threading.Tasks.Task;
 
-//namespace DotNetBase.Business.Identity.Interfaces
-//{
-//    public interface IUserService
-//    {
-//        Task<IEnumerable<UserDto>> GetAllUsersAsync();
-//        Task<UserDto> GetUserByIdAsync(int id);
-//        Task<UserDto> CreateUserAsync(CreateUserDto createUserDto);
-//        Task UpdateUserAsync(int id, UpdateUserDto updateUserDto);
-//        Task DeleteUserAsync(int id);
-//        Task<UserDto> GetUserByEmailAsync(string email); // E-posta ile kullanıcı bulma
-//        Task<bool> CheckPasswordAsync(int userId, string password); // Şifre kontrolü
-//        Task SendVerificationCodeEmailAsync(string email);
-//        Task<bool> VerifyCodeAsync(int userId, string code);
-//    }
-//}
+namespace DotNetBase.Business.Identity.Interfaces
+{
+    public interface IUserService
+    {
+        Task<IEnumerable<User>> GetAllUsersAsync();
+        Task<User> GetUserByIdAsync(int id);
+        Task<User> CreateUserAsync(CreateUser createUser);
+        Task UpdateUserAsync(int id, UpdateUser updateUser);
+        Task DeleteUserAsync(int id);
+        Task<User> GetUserByEmailAsync(string email);
+    }
+}
